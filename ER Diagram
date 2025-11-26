@@ -1,0 +1,51 @@
+erDiagram
+    APPLICANTS ||--o{ APPLICATIONS : "submits"
+    PLOTS ||--o{ APPLICATIONS : "is_requested_for"
+    APPLICATIONS ||--o| ALLOCATIONS : "becomes"
+    APPLICATIONS ||--o{ DOCUMENTS : "includes"
+
+    APPLICANTS {
+        int applicant_id PK
+        varchar omang UK
+        varchar full_name
+        varchar phone
+        varchar village
+        varchar password_hash
+        datetime created_at
+    }
+
+    PLOTS {
+        int plot_id PK
+        varchar plot_number UK
+        varchar location
+        decimal size_m2
+        enum land_use "Residential, Commercial, Agricultural"
+        enum status "Available, Allocated, Reserved"
+    }
+
+    APPLICATIONS {
+        int application_id PK
+        int applicant_id FK
+        int plot_id FK
+        enum application_type
+        enum status "Submitted, Under Review, Site Inspection, Approved, Rejected"
+        varchar documents_path
+        datetime applied_date
+        datetime approved_date
+    }
+
+    ALLOCATIONS {
+        int allocation_id PK
+        int application_id FK
+        datetime approved_date
+        varchar allocation_letter_no
+        enum allocation_status
+    }
+
+    DOCUMENTS {
+        int document_id PK
+        int application_id FK
+        varchar file_name
+        varchar file_path
+        datetime upload_date
+    }
